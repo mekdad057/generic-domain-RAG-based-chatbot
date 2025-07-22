@@ -36,13 +36,17 @@ class User(AbstractUser):
     def is_admin_user(self):
         return self.user_type == 'admin'
 
-
 class DataSource(models.Model):
     SOURCE_TYPE_CHOICES = (
-        # ('db', 'Database'),
         ('pdf', 'PDF'),
         ('doc', 'Word Document'),
         ('txt', 'Text File'),
+    )
+    PROCESSING_STATUS_CHOICES = (
+        ('unprocessed', 'Unprocessed'),
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
     )
     
     created_by = models.ForeignKey(
@@ -50,44 +54,30 @@ class DataSource(models.Model):
         on_delete=models.CASCADE,
         limit_choices_to={'user_type': 'admin'}
     )
-    title = models.CharField(
-        max_length=100,
-        help_text="Descriptive name for the data source"
-    )
-    source_type = models.CharField(
-        max_length=20, 
-        choices=SOURCE_TYPE_CHOICES,
-        help_text="Type of data source"
-    )
-    location = models.CharField(
-        max_length=255,
-        help_text="Connection string, file path, or API endpoint"
-    )
-    description = models.TextField(
-        blank=True,
-        help_text="Additional details about the data source"
-    )
+    title = models.CharField(max_length=100)
+    source_type = models.CharField(max_length=20, choices=SOURCE_TYPE_CHOICES)
+    location = models.CharField(max_length=255)  # File path or storage reference
+    description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    
-    # Availability flags
-    is_active = models.BooleanField(
-        default=True,
-        help_text="Is this source available for conversations?"
+    processing_status = models.CharField(
+        max_length=20,
+        choices=PROCESSING_STATUS_CHOICES,
+        default='unprocessed'  # New documents start as unprocessed
     )
-    
+    processing_config = models.JSONField(
+        blank=True,
+        null=True,
+        help_text="Configuration for document processing"
+    )
     
     class Meta:
-        verbose_name = "Data Source"
-        verbose_name_plural = "Data Sources"
         ordering = ['-created_at']
-        permissions = [
-            ("manage_datasource", "Can manage data sources"),
-        ]
     
     def __str__(self):
         return f"{self.title} ({self.get_source_type_display()})"
-    
 
+
+        
 class Conversation(models.Model):
     user = models.ForeignKey(
         User,
