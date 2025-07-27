@@ -1,36 +1,46 @@
-import time
 import random
-from chatbot_backend.models import DataSource
+import time
+import os
+from django.db import transaction
+from ..models import DataSource
 
-def process_document_sync(data_source_id, config=None):
-    """Synchronous document processing with config"""
+def process_document_sync(source_id, config=None):
+    """Simulate document processing workflow with file handling"""
     try:
-        source = DataSource.objects.get(id=data_source_id)
-        
-        # Update status to processing
-        source.processing_status = 'processing'
-        source.processing_config = config or {}
-        source.save()
-        
-        # Simulate processing (in real implementation, this would be actual processing logic)
-        time.sleep(2)  # Simulate processing time
-        
-        # Mock 90% success rate
-        success = random.random() < 0.9
-        
-        if success:
+        with transaction.atomic():
+            source = DataSource.objects.select_for_update().get(id=source_id)
+            
+            # Check if file exists
+            if not source.file:
+                source.processing_status = 'failed'
+                source.save()
+                return False
+                
+            # Get file path
+            file_path = source.file.path
+            if not os.path.exists(file_path):
+                source.processing_status = 'failed'
+                source.save()
+                return False
+                
+            # Get file size
+            file_size = os.path.getsize(file_path)
+            
+            # Update status to processing
+            source.processing_status = 'processing'
+            source.save()
+            
+            # Simulate processing time (based on file size)
+            # 0.1 sec per MB + random 1-3 sec
+            processing_time = (file_size / (1024 * 1024)) * 0.1 + random.uniform(1, 3)
+            time.sleep(processing_time)
+            
             source.processing_status = 'completed'
             source.save()
             return True
-        
-        # If failed
-        source.processing_status = 'failed'
-        source.save()
-        return False
-        
+                
     except DataSource.DoesNotExist:
         return False
     except Exception as e:
-        # Log error
         print(f"Processing error: {str(e)}")
         return False

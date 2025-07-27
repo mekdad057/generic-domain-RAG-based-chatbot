@@ -1,5 +1,6 @@
 # models.py
 from django.db import models
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
 from django.utils import timezone
@@ -36,6 +37,12 @@ class User(AbstractUser):
     def is_admin_user(self):
         return self.user_type == 'admin'
 
+
+upload_storage = FileSystemStorage(
+    location='uploads/',
+    base_url='/uploads/'
+)
+
 class DataSource(models.Model):
     SOURCE_TYPE_CHOICES = (
         ('pdf', 'PDF'),
@@ -56,7 +63,12 @@ class DataSource(models.Model):
     )
     title = models.CharField(max_length=100)
     source_type = models.CharField(max_length=20, choices=SOURCE_TYPE_CHOICES)
-    location = models.CharField(max_length=255)  # File path or storage reference
+    file = models.FileField(
+        upload_to='sources/%Y/%m/%d/',
+        storage=upload_storage,
+        null=True,
+        blank=True
+    )
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     processing_status = models.CharField(

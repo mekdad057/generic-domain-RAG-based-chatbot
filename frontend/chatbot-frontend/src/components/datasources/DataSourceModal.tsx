@@ -73,17 +73,6 @@ const DataSourceModal: React.FC<DataSourceModalProps> = ({
                   <h6 className="text-muted mb-1">Description</h6>
                   <p>{dataSource.description || "No description provided"}</p>
                 </div>
-
-                <div className="mb-3">
-                  <h6 className="text-muted mb-1">Processing Configuration</h6>
-                  {dataSource.processing_config ? (
-                    <pre className="bg-light p-3 rounded">
-                      {JSON.stringify(dataSource.processing_config, null, 2)}
-                    </pre>
-                  ) : (
-                    <p className="text-muted">No processing configuration</p>
-                  )}
-                </div>
               </div>
 
               <div className="col-md-4">

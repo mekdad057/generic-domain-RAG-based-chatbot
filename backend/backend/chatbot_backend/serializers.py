@@ -43,25 +43,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 ###
 # chatbot_backend/serializers.py
-
-class DataSourceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DataSource
-        fields = '__all__'
-        read_only_fields = (
-            'id', 
-            'created_by', 
-            'processing_status', 
-            'created_at',
-            'processing_config',
-            'location'
-        )
-    
-    def validate_source_type(self, value):
-        allowed_types = ['pdf', 'doc', 'txt']
-        if value not in allowed_types:
-            raise serializers.ValidationError(
-                f"Unsupported file type. Allowed: {', '.join(allowed_types)}"
-            )
-        return value
-    
