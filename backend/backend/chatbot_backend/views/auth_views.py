@@ -52,7 +52,7 @@ class LogoutView(APIView):
         return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
 
 class UserProfileView(APIView):
-    """User profile management"""
+    """User profile management"""   
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
