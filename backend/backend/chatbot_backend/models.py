@@ -42,7 +42,6 @@ upload_storage = FileSystemStorage(
     location='uploads/',
     base_url='/uploads/'
 )
-
 class DataSource(models.Model):
     SOURCE_TYPE_CHOICES = (
         ('pdf', 'PDF'),
@@ -55,7 +54,6 @@ class DataSource(models.Model):
         ('completed', 'Completed'),
         ('failed', 'Failed'),
     )
-    
     created_by = models.ForeignKey(
         User, 
         on_delete=models.CASCADE,
@@ -74,7 +72,7 @@ class DataSource(models.Model):
     processing_status = models.CharField(
         max_length=20,
         choices=PROCESSING_STATUS_CHOICES,
-        default='unprocessed'  # New documents start as unprocessed
+        default='unprocessed'
     )
     processing_config = models.JSONField(
         blank=True,
@@ -82,13 +80,13 @@ class DataSource(models.Model):
         help_text="Configuration for document processing"
     )
     
+    is_active = models.BooleanField(default=True, help_text="Whether this data source is active for use")
+    
     class Meta:
         ordering = ['-created_at']
     
     def __str__(self):
         return f"{self.title} ({self.get_source_type_display()})"
-
-
         
 class Conversation(models.Model):
     user = models.ForeignKey(

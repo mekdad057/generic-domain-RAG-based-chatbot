@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import User, DataSource, Conversation, Message
+from chatbot_backend.models import User, DataSource, Conversation, Message
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -42,4 +42,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'username', 'user_type', 'date_joined']
 
 ###
-# chatbot_backend/serializers.py
+class ConversationSerializer(serializers.ModelSerializer):
+    message_count = serializers.IntegerField(source='messages.count', read_only=True)
+    
+    class Meta:
+        model = Conversation
+        fields = ['id', 'title', 'user', 'created_at', 'updated_at', 'message_count']
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at', 'message_count']
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['id', 'conversation', 'role', 'content', 'timestamp']
+        read_only_fields = ['id', 'timestamp']

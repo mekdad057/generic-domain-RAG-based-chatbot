@@ -87,7 +87,7 @@ REST_FRAMEWORK = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 1}
+        'OPTIONS': {'min_length': 4}
     },
     
 ]
@@ -143,4 +143,3 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
