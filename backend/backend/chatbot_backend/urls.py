@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from chatbot_backend.views import (
     conversation_views,
     auth_views,
-    data_views
+    
 )
 
 # Create router for main resources
