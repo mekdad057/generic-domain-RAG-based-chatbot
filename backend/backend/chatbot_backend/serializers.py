@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from chatbot_backend.models import User, DataSource, Conversation, Message
+from chatbot_backend.models import User, Conversation, Message
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(

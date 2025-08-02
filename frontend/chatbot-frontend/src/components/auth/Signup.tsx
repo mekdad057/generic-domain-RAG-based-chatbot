@@ -32,7 +32,7 @@ const Signup: React.FC = () => {
     try {
       const result = await signup(formData);
       if (result.success) {
-        navigate("/dashboard");
+        navigate("/");
       } else {
         setError(result.error || "Signup failed");
       }

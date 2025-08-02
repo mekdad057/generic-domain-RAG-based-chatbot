@@ -4,7 +4,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from chatbot_backend.serializers import UserRegistrationSerializer, UserProfileSerializer
-from chatbot_backend.permissions import IsAdminUser 
 from chatbot_backend.models import User
 
 class SignUpView(APIView):
@@ -71,12 +70,3 @@ class UserProfileView(APIView):
             return Response(serializer.data)
             
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class AdminUserView(APIView):
-    """Admin-only user management"""
-    permission_classes = [IsAuthenticated, IsAdminUser]
-    
-    def get(self, request):
-        users = User.objects.all()
-        serializer = UserProfileSerializer(users, many=True)
-        return Response(serializer.data)

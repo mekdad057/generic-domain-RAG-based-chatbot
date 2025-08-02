@@ -7,7 +7,6 @@ from django.utils import timezone
 
 class User(AbstractUser):
     USER_TYPE_CHOICES = (
-        ('admin', 'Admin'),
         ('user', 'User'),
     )
     
@@ -31,63 +30,10 @@ class User(AbstractUser):
         verbose_name = "User"
         verbose_name_plural = "Users"
         ordering = ['-created_at']
-        
-    
-    @property
-    def is_admin_user(self):
-        return self.user_type == 'admin'
+      
 
 
-upload_storage = FileSystemStorage(
-    location='uploads/',
-    base_url='/uploads/'
-)
-class DataSource(models.Model):
-    SOURCE_TYPE_CHOICES = (
-        ('pdf', 'PDF'),
-        ('doc', 'Word Document'),
-        ('txt', 'Text File'),
-    )
-    PROCESSING_STATUS_CHOICES = (
-        ('unprocessed', 'Unprocessed'),
-        ('processing', 'Processing'),
-        ('completed', 'Completed'),
-        ('failed', 'Failed'),
-    )
-    created_by = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE,
-        limit_choices_to={'user_type': 'admin'}
-    )
-    title = models.CharField(max_length=100)
-    source_type = models.CharField(max_length=20, choices=SOURCE_TYPE_CHOICES)
-    file = models.FileField(
-        upload_to='sources/%Y/%m/%d/',
-        storage=upload_storage,
-        null=True,
-        blank=True
-    )
-    description = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    processing_status = models.CharField(
-        max_length=20,
-        choices=PROCESSING_STATUS_CHOICES,
-        default='unprocessed'
-    )
-    processing_config = models.JSONField(
-        blank=True,
-        null=True,
-        help_text="Configuration for document processing"
-    )
-    
-    is_active = models.BooleanField(default=True, help_text="Whether this data source is active for use")
-    
-    class Meta:
-        ordering = ['-created_at']
-    
-    def __str__(self):
-        return f"{self.title} ({self.get_source_type_display()})"
-        
+
 class Conversation(models.Model):
     user = models.ForeignKey(
         User,
@@ -98,12 +44,7 @@ class Conversation(models.Model):
         max_length=100,
         default="New Conversation"
     )
-    data_sources = models.ManyToManyField(
-        DataSource,
-        blank=True,
-        help_text="Data sources used in this conversation",
-        limit_choices_to={'is_active': True}  # Only active sources
-    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -122,10 +63,7 @@ class Conversation(models.Model):
         
         super().save(*args, **kwargs)
         
-        # Add default sources if none provided
-        if not self.data_sources.exists():
-            default_sources = DataSource.objects.filter(is_active=True)
-            self.data_sources.set(default_sources)
+        
 
 
 class Message(models.Model):

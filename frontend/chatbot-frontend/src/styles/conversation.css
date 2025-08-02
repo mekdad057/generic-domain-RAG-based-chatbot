@@ -1,0 +1,97 @@
+/* Conversation List Item */
+.conversation-list-item {
+  cursor: pointer;
+}
+
+.conversation-list-item:hover {
+  background-color: rgb(60, 140, 225);
+}
+
+.conversation-list-item:active {
+  background-color: rgb(10, 90, 175);
+}
+
+/* New Conversation Button */
+.new-conversation-btn {
+  transition: none;
+}
+
+.new-conversation-btn:hover {
+  background-color: rgb(60, 140, 225);
+}
+
+.new-conversation-btn:active {
+  background-color: rgb(10, 90, 175);
+}
+
+/* Message Bubble */
+.message-bubble {
+  max-width: 75%;
+}
+
+.message-bubble.user {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.message-bubble.assistant {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+.message-bubble.failed {
+  border-color: #dc3545;
+}
+
+/* Add to styles/conversation.css */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.messages-scroll-area {
+  overflow-y: auto;
+  max-height: calc(100vh - 250px); /* Adjust based on your layout */
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+  .messages-scroll-area {
+    max-height: calc(100vh - 300px);
+  }
+}
+
+/* Ensure conversation items can show delete button */
+.conversation-list-item {
+  position: relative;
+  overflow: visible !important; /* Critical fix - prevents clipping */
+  padding-right: 2.5rem; /* Make space for delete button */
+}
+
+/* Add subtle transition for better UX */
+.conversation-list-item .delete-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.conversation-list-item:hover .delete-btn {
+  opacity: 1;
+}
+
+/* Add to styles/conversation.css */
+/* Full-height container */
+.h-100 {
+  height: 100%;
+}
+
+/* Ensure message area scrolls properly */
+.messages-scroll-area {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+/* Make sure the message input stays at bottom */
+.message-input-container {
+  flex-shrink: 0;
+}

@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
-from chatbot_backend.models import Conversation, Message, DataSource
+from chatbot_backend.models import Conversation, Message 
 from chatbot_backend.serializers import ConversationSerializer, MessageSerializer
 from chatbot_backend.services.mock_query_processing import mock_generate_response
 from rest_framework.exceptions import NotFound 
@@ -17,9 +17,6 @@ class ConversationListView(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         conversation = serializer.save(user=self.request.user)
-        # Set default data sources (all active ones)
-        active_sources = DataSource.objects.filter(is_active=True)
-        conversation.data_sources.set(active_sources)
         return conversation
 
 class MessageListView(viewsets.ViewSet):

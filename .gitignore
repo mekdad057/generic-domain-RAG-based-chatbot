@@ -3,3 +3,4 @@
 .coverage
 __pycache__
 output.txt
+seek.py

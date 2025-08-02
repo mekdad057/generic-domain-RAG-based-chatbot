@@ -4,7 +4,7 @@ export interface User {
   email: string;
   first_name: string;
   last_name: string;
-  user_type: 'admin' | 'user';
+  user_type: "admin" | "user";
   date_joined: string;
 }
 
@@ -25,18 +25,18 @@ export interface SignupData {
 export interface DataSource {
   id: number;
   title: string;
-  source_type: 'pdf' | 'doc' | 'txt';
+  source_type: "pdf" | "doc" | "txt";
   location: string;
   description: string;
   created_at: string;
-  processing_status: 'unprocessed' | 'processing' | 'completed' | 'failed';
+  processing_status: "unprocessed" | "processing" | "completed" | "failed";
   processing_config: Record<string, any> | null;
   created_by: number;
 }
 
 export interface CreateDataSourceData {
   title: string;
-  source_type: 'pdf' | 'doc' | 'txt';
+  source_type: "pdf" | "doc" | "txt";
   description?: string;
   file: File; // For file upload
 }
@@ -58,10 +58,35 @@ export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  login: (credentials: LoginCredentials) => Promise<{ success: boolean; user?: User; error?: string }>;
+  login: (
+    credentials: LoginCredentials
+  ) => Promise<{ success: boolean; user?: User; error?: string }>;
   logout: () => Promise<{ success: boolean; error?: string }>;
-  signup: (userData: SignupData) => Promise<{ success: boolean; user?: User; error?: string }>;
-  updateUserProfile: (profileData: Partial<User>) => Promise<{ success: boolean; user?: User; error?: string }>;
+  signup: (
+    userData: SignupData
+  ) => Promise<{ success: boolean; user?: User; error?: string }>;
+  updateUserProfile: (
+    profileData: Partial<User>
+  ) => Promise<{ success: boolean; user?: User; error?: string }>;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
+
+export interface Conversation {
+  id: number;
+  title: string;
+  user: number;
+  created_at: string;
+  updated_at: string;
+  message_count: number;
+}
+
+export interface Message {
+  id: number;
+  conversation: number;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+  metadata?: Record<string, any>;
+  failed?: boolean; // Add this to the interface instead of type assertion
 }
