@@ -65,8 +65,8 @@
 /* Ensure conversation items can show delete button */
 .conversation-list-item {
   position: relative;
-  overflow: visible !important; /* Critical fix - prevents clipping */
-  padding-right: 2.5rem; /* Make space for delete button */
+  overflow: visible !important;
+  padding-right: 2.5rem;
 }
 
 /* Add subtle transition for better UX */
@@ -79,10 +79,9 @@
   opacity: 1;
 }
 
-/* Add to styles/conversation.css */
 /* Full-height container */
 .h-100 {
-  height: 100%;
+  height: max-content;
 }
 
 /* Ensure message area scrolls properly */

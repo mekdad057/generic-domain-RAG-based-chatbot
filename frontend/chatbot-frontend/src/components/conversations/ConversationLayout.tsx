@@ -4,6 +4,7 @@ import ConversationList from "./ConversationList";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import type { Conversation, Message } from "../../types";
+import "../../styles/conversation.css";
 
 interface ConversationLayoutProps {
   conversations: Conversation[];
@@ -39,8 +40,8 @@ const ConversationLayout: React.FC<ConversationLayoutProps> = ({
   deletingConversationId,
 }) => {
   return (
-    <div className="container-fluid py-4">
-      <div className="row">
+    <div className="container-fluid py-4 h-100">
+      <div className="row ">
         {/* Conversation List - 30% width on larger screens */}
         <div className="col-md-4 col-lg-3 mb-4 mb-md-0">
           <ConversationList
