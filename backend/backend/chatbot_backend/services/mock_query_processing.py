@@ -4,8 +4,8 @@ def mock_generate_response(conversation, user_query):
     Returns only the response text as requested.
     """
     # Simple keyword-based response generation
-    if "hello" in user_query.lower():
-        return "Hello! How can I assist you today?"
+    if "مرحباً" in user_query.lower():
+        return "أهلا ما هو سؤالك؟"
     elif "help" in user_query.lower():
         return "I'm here to help. What would you like to know?"
     elif "thank" in user_query.lower():
