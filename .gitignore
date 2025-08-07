@@ -4,3 +4,5 @@
 __pycache__
 output.txt
 seek.py
+vectordb
+secret.config

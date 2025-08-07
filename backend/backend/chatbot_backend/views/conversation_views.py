@@ -1,10 +1,12 @@
+from django.db import transaction
+
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from chatbot_backend.models import Conversation, Message 
 from chatbot_backend.serializers import ConversationSerializer, MessageSerializer
-from chatbot_backend.services.mock_query_processing import mock_generate_response
+from chatbot_backend.services.query_processing import generate_response
 from rest_framework.exceptions import NotFound 
 
 
@@ -28,7 +30,8 @@ class MessageListView(viewsets.ViewSet):
         messages = Message.objects.filter(conversation=conversation)
         serializer = MessageSerializer(messages, many=True)
         return Response(serializer.data)
-    
+        
+    @transaction.atomic
     def create(self, request, conversation_id=None):
         # Verify user owns the conversation
         conversation = self.get_conversation(conversation_id)
@@ -41,7 +44,7 @@ class MessageListView(viewsets.ViewSet):
         )
         
         # Generate mock response (simplified)
-        response_text = mock_generate_response(conversation, user_message.content)
+        response_text = generate_response(conversation, user_message.content)
         
         # Create assistant message
         assistant_msg = Message.objects.create(

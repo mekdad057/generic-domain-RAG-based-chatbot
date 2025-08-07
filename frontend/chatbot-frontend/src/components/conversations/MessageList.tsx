@@ -70,9 +70,7 @@ const MessageList: React.FC<MessageListProps> = ({
             <button
               type="button"
               className="btn-close"
-              onClick={() => {
-                /* Need to handle error clear */
-              }}
+              data-bs-dismiss="alert"
               aria-label="Close"
             ></button>
           </div>
