@@ -78,7 +78,7 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
         <div className="flex-grow-1 text-start">
           <ConversationTitle title={conversation.title} />
           <small className="text-muted">
-            press the conversation to open it.
+            press conversation to open it.
           </small>
         </div>
         {isDeleting && (

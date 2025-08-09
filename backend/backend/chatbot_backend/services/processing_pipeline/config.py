@@ -1,6 +1,7 @@
 import zipfile
 import os
 from pathlib import Path
+from chatbot_backend.utils import read_secrets
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
@@ -12,7 +13,10 @@ PROCESSING_CONFIG = {
         "chroma_testing_vdb_path": BASE_DIR / "vectordb-aren-sayed0am-testing.zip",
         "loaded_vdb_path": BASE_DIR / "chatbot_backend/vectordb",
         "chat_model": "microsoft/phi-4",
-        "history_max_length": 3
+        "history_max_length": 3,
+        "retriever": {
+            "top_k": 5
+        }
 
         
 

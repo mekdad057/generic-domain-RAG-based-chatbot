@@ -25,12 +25,12 @@ query_embedder = HuggingFaceAPITextEmbedder(api_type="text_embeddings_inference"
                                             api_params={"url": PROCESSING_CONFIG["response_config"]["embedding_api"]},
                                             token=Secret.from_token(PROCESSING_CONFIG["HF_API_TOKEN"]))
 
-retriever = ChromaEmbeddingRetriever(document_store=document_store, top_k=3)
+retriever = ChromaEmbeddingRetriever(document_store=document_store, top_k=PROCESSING_CONFIG["response_config"]["retriever"]["top_k"])
 
 template1 = [ChatMessage.from_user(main_prompt_template)]
 main_promptbuilder = ChatPromptBuilder(template=template1, required_variables=["history","query"], variables = ['query', 'history', 'documents'])
 template2 = [ChatMessage.from_user(fallback_prompt_template)]
-fallback_promptbuilder = ChatPromptBuilder(template=template2, required_variables=["history"])
+fallback_promptbuilder = ChatPromptBuilder(template=template2, required_variables=["query"])
 
 main_llm = HuggingFaceAPIChatGenerator(
       api_type=API_TYPE,

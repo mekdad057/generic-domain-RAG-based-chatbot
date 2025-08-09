@@ -1,4 +1,6 @@
-BASE_DIR = Path(__file__).resolve().parent.parent
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 def read_secrets(key):
     contents = None
@@ -8,5 +10,6 @@ def read_secrets(key):
         raise ValueError("you haven't created the secret.config file!!!")
     secrets = contents.split('\n')
     kv_pairs = [s.split('=') for s in secrets]
-    kv_pairs = [[kv[0].strip(), kv[1].strip()] for kv in kv_pairs]
-    return [kv for kv in kv_pairs if kv[0] == key][1]
+    kv_pairs = [[kv[0].strip(), kv[1].strip()] for kv in kv_pairs if len(kv)==2]
+    check = [kv for kv in kv_pairs if kv[0] == key] 
+    return [kv for kv in kv_pairs if kv[0] == key][0][1]
